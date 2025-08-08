@@ -22,7 +22,7 @@ final class ServiceProvider extends BaseServiceProvider implements DeferrablePro
      */
     public function register(): void
     {
-        $this->app->singleton(ClientContract::class, static function (): Client {
+        $this->app->singleton('openai', static function (): Client {
             $apiKey = config('openai.api_key');
             $organization = config('openai.organization');
             $project = config('openai.project');
@@ -48,9 +48,6 @@ final class ServiceProvider extends BaseServiceProvider implements DeferrablePro
 
             return $client->make();
         });
-
-        $this->app->alias(ClientContract::class, 'openai');
-        $this->app->alias(ClientContract::class, Client::class);
     }
 
     /**
@@ -77,8 +74,6 @@ final class ServiceProvider extends BaseServiceProvider implements DeferrablePro
     public function provides(): array
     {
         return [
-            Client::class,
-            ClientContract::class,
             'openai',
         ];
     }
